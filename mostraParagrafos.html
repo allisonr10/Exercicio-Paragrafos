@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title></title>
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+		integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+	<style>
+		body {
+			font-family: 'Open Sans', sans-serif;
+		}
+
+		button {
+			cursor: pointer;
+		}
+
+		#container {
+			width: 90%;
+			max-width: 600px;
+			margin: auto;
+		}
+
+		.card {
+			margin: 16px;
+			border: 1px solid #ccc;
+			padding: 16px 32px 32px 16px;
+			position: relative;
+		}
+
+		.card p {
+			margin: 0;
+		}
+
+		.card.text-hidden:after {
+			content: "";
+			display: block;
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			width: 100%;
+			height: 64px;
+			background-image: linear-gradient(transparent, white 80%);
+			pointer-events: none;
+		}
+
+		.card button {
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			background-color: transparent;
+			z-index: 1;
+			border: none;
+			font-size: 1.5em;
+		}
+
+		.card button:hover {
+			color: red;
+		}
+
+
+		body,
+		html {
+			height: 100%;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="container">
+		<div class="card">
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+				consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+				cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+				proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+		</div>
+
+		<div class="card">
+			<p>Lorem ipsum dolor sit amet.</p>
+		</div>
+		<div class="card">
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+				consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+				cillum dolore eu fugiat nulla pariatur</p>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		
+			//criar um array de cada paragrafo
+			const paragrafos = Array.from(document.querySelectorAll('.card p'))
+
+			//salvar os textos originais dos paragrafos
+			const textoOriginal = paragrafos.map(p => p.innerText)
+			//definindo o tamanho do paragrafo que será mostrado
+			const tamanhoMaximo = 100
+			//percorrendo o array
+
+			paragrafos.forEach( (p, indice) => {
+				if(p.innerText.length > tamanhoMaximo){
+					p.textContent = p.innerHTML.substring(0, tamanhoMaximo) + '...'
+				
+					//criar botão para expandir texto
+				
+					const botao = document.createElement('button')
+					botao.innerHTML = '<i class="fas fa-chevron-down"></i>'
+					
+					//colocando botao nos paragrafos que tem mais de 100 caracteres
+					p.parentElement.appendChild(botao)
+
+					//colocar classe no paragrafo para esconder texto
+					p.parentElement.classList.add('text-hidden')
+
+					//colocar evento no botão para abrir o texto completo
+					botao.addEventListener('click', function(e){
+						toggleText(e,p,indice)
+					})
+				}
+			
+			})
+
+			//função para verificar se existe a classe ou não no objeto clicado
+
+			function toggleText(e,p,indice){
+				const card = e.currentTarget.parentElement
+
+				//verificar se existe a classe ou não
+				card.classList.toggle('text-hidden')
+				e.currentTarget.querySelector('i').classList.toggle('fa-chevron-down')
+				e.currentTarget.querySelector('i').classList.toggle('fa-chevron-up')
+
+				//colocar paragrafo original
+				if(card.classList.contains('text-hidden')){
+					p.textContent = p.innerHTML.substring(0, tamanhoMaximo) + '...'
+				}else{
+					p.textContent = textoOriginal[indice]
+				}
+			}
+		
+
+
+	</script>
+</body>
+
+</html>
